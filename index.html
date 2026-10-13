@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="uk" class="scroll-smooth dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Портфоліо | Portfolio</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        darkbg: '#0a0a0c',
+                        cardbg: '#141418',
+                        modalbg: '#18181f',
+                        accent: '#6366f1',
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0c;
+            color: #f3f4f6;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a0c;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #27272a;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3f3f46;
+        }
+        /* Custom modal backdrop blur & transitions */
+        .modal-overlay {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="bg-darkbg text-gray-100 antialiased selection:bg-indigo-500 selection:text-white">
+
+    <header class="fixed top-0 left-0 right-0 z-40 bg-darkbg/80 backdrop-blur-md border-b border-white/5">
+        <div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
+            <a href="#" class="font-bold text-lg tracking-tight text-white flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-indigo-500 animate-pulse"></span>
+                funphen
+            </a>
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-gray-400">
+                <a href="#about" data-i18n="nav_about" class="hover:text-white transition-colors">Про мене</a>
+                <a href="#stats" data-i18n="nav_stats" class="hover:text-white transition-colors">Статистика</a>
+                <a href="#projects" data-i18n="nav_projects" class="hover:text-white transition-colors">Проєкти</a>
+                <a href="#contact" data-i18n="nav_contact" class="hover:text-white transition-colors">Контакти</a>
+            </nav>
+            <div class="flex items-center space-x-4">
+                <!-- Language Toggle Button -->
+                <button id="lang-toggle" onclick="toggleLanguage()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 text-xs font-semibold text-gray-200 transition-all">
+                    <i class="fa-solid fa-globe text-indigo-400"></i>
+                    <span id="lang-label">UA / EN</span>
+                </button>
+                
+                <!-- Restored Contact CTA Button -->
+                <a href="#contact" data-i18n="nav_cta" class="inline-flex items-center justify-center px-4 py-2 text-xs font-semibold uppercase tracking-wider text-white bg-indigo-600 hover:bg-indigo-500 rounded-full transition-all duration-200 shadow-lg shadow-indigo-500/20">
+                    Зв'язатися
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-6 pt-32 pb-20">
+
+        <!-- About Section -->
+        <section id="about" class="py-12 md:py-20">
+            <div class="max-w-3xl">
+                <h1 data-i18n="about_title" class="text-4xl md:text-6xl font-bold tracking-tight text-white mb-6 leading-tight">
+                    Про мене
+                </h1>
+                <p data-i18n="about_desc" class="text-lg md:text-xl text-gray-400 mb-8 font-light leading-relaxed">
+                    Вітаю! Я створюю якісний візуальний контент, займаюся графічним та веб-дизайном, 2D/3D анімацією, відеомонтажем та професійними перекладами. Орієнтуюся на високу якість, стиль та деталі у кожному проєкті.
+                </p>
+                <div class="flex flex-wrap items-center gap-4">
+                    <a href="#projects" class="px-6 py-3 rounded-full bg-white text-darkbg font-semibold text-sm hover:bg-gray-200 transition-all shadow-md flex items-center gap-2">
+                        <span data-i18n="btn_view_projects">Переглянути проєкти</span>
+                        <i class="fa-solid fa-arrow-down text-xs"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section id="stats" class="py-16 border-t border-white/5">
+            <div class="mb-10">
+                <h2 data-i18n="stats_subtitle" class="text-xs uppercase tracking-widest text-indigo-400 font-semibold mb-2">Статистика</h2>
+                <h3 data-i18n="stats_title" class="text-3xl font-bold text-white">Завершені проєкти за напрямками</h3>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="bg-cardbg rounded-2xl border border-white/5 p-6 hover:border-indigo-500/30 transition-all">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center mb-4 text-xl">
+                        <i class="fa-solid fa-palette"></i>
+                    </div>
+                    <div class="text-3xl font-bold text-white mb-1">15+</div>
+                    <div data-i18n="cat_design" class="text-sm font-medium text-gray-300">Дизайн</div>
+                    <div data-i18n="stat_completed" class="text-xs text-gray-500 mt-1">Завершених проєктів</div>
+                </div>
+
+                <div class="bg-cardbg rounded-2xl border border-white/5 p-6 hover:border-purple-500/30 transition-all">
+                    <div class="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center mb-4 text-xl">
+                        <i class="fa-solid fa-film"></i>
+                    </div>
+                    <div class="text-3xl font-bold text-white mb-1">10+</div>
+                    <div data-i18n="cat_animation" class="text-sm font-medium text-gray-300">Анімації</div>
+                    <div data-i18n="stat_completed" class="text-xs text-gray-500 mt-1">Завершених проєктів</div>
+                </div>
+
+                <div class="bg-cardbg rounded-2xl border border-white/5 p-6 hover:border-pink-500/30 transition-all">
+                    <div class="w-10 h-10 rounded-xl bg-pink-500/10 text-pink-400 flex items-center justify-center mb-4 text-xl">
+                        <i class="fa-solid fa-video"></i>
+                    </div>
+                    <div class="text-3xl font-bold text-white mb-1">25+</div>
+                    <div data-i18n="cat_editing" class="text-sm font-medium text-gray-300">Монтаж</div>
+                    <div data-i18n="stat_completed" class="text-xs text-gray-500 mt-1">Завершених проєктів</div>
+                </div>
+
+                <div class="bg-cardbg rounded-2xl border border-white/5 p-6 hover:border-emerald-500/30 transition-all">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center mb-4 text-xl">
+                        <i class="fa-solid fa-language"></i>
+                    </div>
+                    <div class="text-3xl font-bold text-white mb-1">40+</div>
+                    <div data-i18n="cat_translation" class="text-sm font-medium text-gray-300">Переклади</div>
+                    <div data-i18n="stat_completed" class="text-xs text-gray-500 mt-1">Завершених проєктів</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Accordions Section -->
+        <section id="projects" class="py-16 border-t border-white/5">
+            <div class="mb-10">
+                <h2 data-i18n="projects_subtitle" class="text-xs uppercase tracking-widest text-indigo-400 font-semibold mb-2">Портфоліо</h2>
+                <h3 data-i18n="projects_title" class="text-3xl font-bold text-white">Категорії проєктів</h3>
+                <p data-i18n="projects_desc" class="text-gray-400 text-sm mt-2 font-light">Натисніть на категорію, щоб розгорнути її, а потім на будь-яку картку для перегляду у модальному вікні.</p>
+            </div>
+
+            <div class="space-y-4">
+                <!-- Accordion Item 1: Дизайн -->
+                <div class="bg-cardbg border border-white/5 rounded-2xl overflow-hidden transition-all duration-300">
+                    <button onclick="toggleAccordion(1)" class="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-white/[0.02] transition-colors focus:outline-none">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center font-bold">
+                                <i class="fa-solid fa-palette"></i>
+                            </div>
+                            <div>
+                                <h4 data-i18n="acc_1_title" class="text-xl font-bold text-white">1. Дизайн</h4>
+                                <span data-i18n="acc_1_sub" class="text-xs text-gray-400">15+ завершених проєктів • UI/UX, Брендінг, Графіка</span>
+                            </div>
+                        </div>
+                        <i id="acc-icon-1" class="fa-solid fa-chevron-down text-gray-400 transition-transform duration-300"></i>
+                    </button>
+                    <div id="acc-content-1" class="hidden px-6 pb-6 pt-2 border-t border-white/5">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                            <div onclick="openProjectModal('design_1')" class="group bg-darkbg p-5 rounded-xl border border-white/5 hover:border-indigo-500/50 cursor-pointer transition-all hover:scale-[1.01]">
+                                <div class="h-44 rounded-lg bg-gray-800 mb-4 overflow-hidden relative">
+                                    <img src="https://placehold.co/800x500/2a2a38/ffffff?text=Mobile+App+UI" alt="UI/UX Design" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                        <span class="px-3 py-1.5 rounded-full bg-white/20 text-white text-xs font-semibold backdrop-blur-md flex items-center gap-1.5">
+                                            <i class="fa-solid fa-expand"></i> <span data-i18n="lbl_open_modal">Відкрити проєкт</span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <h5 data-i18n="p1_item1_title" class="font-bold text-white mb-1 group-hover:text-indigo-400 transition-colors">Редизайн мобільного додатку</h5>
+                                <p data-i18n="p1_item1_desc" class="text-xs text-gray-400 mb-3 line-clamp-2">Сучасний та мінімалістичний дизайн інтерфейсу з акцентом на UX.</p>
+                                <div class="flex gap-2">
+                                    <span class="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-300">Figma</span>
+                                    <span class="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-300">UI/UX</span>
+                                </div>
+                            </div>
+                            
+                            <div onclick="openProjectModal('design_2')" class="group bg-darkbg p-5 rounded-xl border border-white/5 hover:border-indigo-500/50 cursor-pointer transition-all hover:scale-[1.01]">
+                                <div class="h-44 rounded-lg bg-gray-800 mb-4 overflow-hidden relative">
+                                    <img src="https://placehold.co/800x500/2a2a38/ffffff?text=Branding+Identity" alt="Branding" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                        <span class="px-3 py-1.5 rounded-full bg-white/20 text-white text-xs font-semibold backdrop-blur-md flex items-center gap-1.5">
+                                            <i class="fa-solid fa-expand"></i> <span data-i18n="lbl_open_modal">Відкрити проєкт</span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <h5 data-i18n="p1_item2_title" class="font-bold text-white mb-1 group-hover:text-indigo-400 transition-colors">Брендинг та Айдентика</h5>
+                                <p data-i18n="p1_item2_desc" class="text-xs text-gray-400 mb-3 line-clamp-2">Розробка айдентики, логотипа та брендбука для IT-стартапу.</p>
+                                <div class="flex gap-2">
+                                    <span class="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-300">Illustrator</span>
+                                    <span class="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-300">Brandbook</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accordion Item 2: Анімації -->
+                <div class="bg-cardbg border border-white/5 rounded-2xl overflow-hidden transition-all duration-300">
+                    <button onclick="toggleAccordion(2)" class="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-white/[0.02] transition-colors focus:outline-none">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center font-bold">
+                                <i class="fa-solid fa-film"></i>
+                            </div>
+                            <div>
+                                <h4 data-i18n="acc_2_title" class="text-xl font-bold text-white">2. Анімації</h4>
+                                <span data-i18n="acc_2_sub" class="text-xs text-gray-400">10+ завершених проєктів • Motion Design, 2D/3D Анімація</span>
+                            </div>
+                        </div>
+                        <i id="acc-icon-2" class="fa-solid fa-chevron-down text-gray-400 transition-transform duration-300"></i>
+                    </button>
+                    <div id="acc-content-2" class="hidden px-6 pb-6 pt-2 border-t border-white/5">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                            <div onclick="openProjectModal('anim_1')" class="group bg-darkbg p-5 rounded-xl border border-white/5 hover:border-purple-500/50 cursor-pointer transition-all hover:scale-[1.01]">
+                                <div class="h-44 rounded-lg bg-gray-800 mb-4 overflow-hidden relative">
+                                    <img src="https://placehold.co/800x500/382a38/ffffff?text=Logo+Animation" alt="Logo Animation" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                    <div class="absolute inset-0 flex items-center justify-center">
+                                        <div class="w-12 h-12 rounded-full bg-purple-600/80 text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                                            <i class="fa-solid fa-play text-lg ml-0.5"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h5 data-i18n="p2_item1_title" class="font-bold text-white mb-1 group-hover:text-purple-400 transition-colors">Анімація Логотипа</h5>
+                                <p data-i18n="p2_item1_desc" class="text-xs text-gray-400 mb-3 line-clamp-2">Плавний 2D моушн-дизайн логотипа для промо-ролика.</p>
+                                <div class="flex gap-2">
+                                    <span class="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-300">After Effects</span>
+                                    <span class="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-300">2D Motion</span>
+                                </div>
+                            </div>
+                            
+                            <div onclick="openProjectModal('anim_2')" class="group bg-darkbg p-5 rounded-xl border border-white/5 hover:border-purple-500/50 cursor-pointer transition-all hover:scale-[1.01]">
+                                <div class="h-44 rounded-lg bg-gray-800 mb-4 overflow-hidden relative">
+                                    <img src="https://placehold.co/800x500/382a38/ffffff?text=3D+Product+Render" alt="3D Product" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                    <div class="absolute inset-0 flex items-center justify-center">
+                                        <div class="w-12 h-12 rounded-full bg-purple-600/80 text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                                            <i class="fa-solid fa-play text-lg ml-0.5"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h5 data-i18n="p2_item2_title" class="font-bold text-white mb-1 group-hover:text-purple-400 transition-colors">3D Презентація Продукту</h5>
+                                <p data-i18n="p2_item2_desc" class="text-xs text-gray-400 mb-3 line-clamp-2">Тривимірна анімація гаджета з динамічним освітленням.</p>
+                                <div class="flex gap-2">
+                                    <span class="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-300">Blender</span>
+                                    <span class="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-300">3D Render</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accordion Item 3: Монтаж -->
+                <div class="bg-cardbg border border-white/5 rounded-2xl overflow-hidden transition-all duration-300">
+                    <button onclick="toggleAccordion(3)" class="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-white/[0.02] transition-colors focus:outline-none">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-xl bg-pink-500/10 text-pink-400 flex items-center justify-center font-bold">
+                                <i class="fa-solid fa-video"></i>
+                            </div>
+                            <div>
+                                <h4 data-i18n="acc_3_title" class="text-xl font-bold text-white">3. Монтаж</h4>
+                                <span data-i18n="acc_3_sub" class="text-xs text-gray-400">25+ завершених проєктів • YouTube, Reels/TikTok, Відеореклама</span>
+                            </div>
+                        </div>
+                        <i id="acc-icon-3" class="fa-solid fa-chevron-down text-gray-400 transition-transform duration-300"></i>
+                    </button>
+                    <div id="acc-content-3" class="hidden px-6 pb-6 pt-2 border-t border-white/5">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                            <div onclick="openProjectModal('edit_1')" class="group bg-darkbg p-5 rounded-xl border border-white/5 hover:border-pink-500/50 cursor-pointer transition-all hover:scale-[1.01]">
+                                <div class="h-44 rounded-lg bg-gray-800 mb-4 overflow-hidden relative">
+                                    <img src="https://placehold.co/800x500/382a2e/ffffff?text=Commercial+Showreel" alt="Promo Video" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                    <div class="absolute inset-0 flex items-center justify-center">
+                                        <div class="w-12 h-12 rounded-full bg-pink-600/80 text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                                            <i class="fa-solid fa-play text-lg ml-0.5"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h5 data-i18n="p3_item1_title" class="font-bold text-white mb-1 group-hover:text-pink-400 transition-colors">Динамічна Відеореклама</h5>
+                                <p data-i18n="p3_item1_desc" class="text-xs text-gray-400 mb-3 line-clamp-2">Швидкий монтаж, саунд-дизайн та колірнокорекція для рекламного ролика.</p>
+                                <div class="flex gap-2">
+                                    <span class="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-300">Premiere Pro</span>
+                                    <span class="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-300">Sound Design</span>
+                                </div>
+                            </div>
+                            
+                            <div onclick="openProjectModal('edit_2')" class="group bg-darkbg p-5 rounded-xl border border-white/5 hover:border-pink-500/50 cursor-pointer transition-all hover:scale-[1.01]">
+                                <div class="h-44 rounded-lg bg-gray-800 mb-4 overflow-hidden relative">
+                                    <img src="https://placehold.co/800x500/382a2e/ffffff?text=Shorts+%26+Reels" alt="Reels" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                    <div class="absolute inset-0 flex items-center justify-center">
+                                        <div class="w-12 h-12 rounded-full bg-pink-600/80 text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                                            <i class="fa-solid fa-play text-lg ml-0.5"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h5 data-i18n="p3_item2_title" class="font-bold text-white mb-1 group-hover:text-pink-400 transition-colors">Серія Reels / Shorts</h5>
+                                <p data-i18n="p3_item2_desc" class="text-xs text-gray-400 mb-3 line-clamp-2">Короткі динамічні відео з субтитрами та ефектами для соцмереж.</p>
+                                <div class="flex gap-2">
+                                    <span class="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-300">CapCut</span>
+                                    <span class="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-300">Subtitles</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accordion Item 4: Переклади -->
+                <div class="bg-cardbg border border-white/5 rounded-2xl overflow-hidden transition-all duration-300">
+                    <button onclick="toggleAccordion(4)" class="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-white/[0.02] transition-colors focus:outline-none">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold">
+                                <i class="fa-solid fa-language"></i>
+                            </div>
+                            <div>
+                                <h4 data-i18n="acc_4_title" class="text-xl font-bold text-white">4. Переклади</h4>
+                                <span data-i18n="acc_4_sub" class="text-xs text-gray-400">40+ завершених проєктів • Локалізація, Субтитри, Документація</span>
+                            </div>
+                        </div>
+                        <i id="acc-icon-4" class="fa-solid fa-chevron-down text-gray-400 transition-transform duration-300"></i>
+                    </button>
+                    <div id="acc-content-4" class="hidden px-6 pb-6 pt-2 border-t border-white/5">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                            <div onclick="openProjectModal('trans_1')" class="group bg-darkbg p-5 rounded-xl border border-white/5 hover:border-emerald-500/50 cursor-pointer transition-all hover:scale-[1.01]">
+                                <div class="h-44 rounded-lg bg-gray-800 mb-4 flex items-center justify-center p-6 text-center bg-gradient-to-br from-emerald-900/20 to-teal-900/20 group-hover:scale-105 transition-transform duration-300">
+                                    <i class="fa-solid fa-globe text-5xl text-emerald-400"></i>
+                                </div>
+                                <h5 data-i18n="p4_item1_title" class="font-bold text-white mb-1 group-hover:text-emerald-400 transition-colors">Локалізація Вебсайту</h5>
+                                <p data-i18n="p4_item1_desc" class="text-xs text-gray-400 mb-3 line-clamp-2">Повний переклад та адаптація контенту для англомовної аудиторії.</p>
+                                <div class="flex gap-2">
+                                    <span class="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-300">EN - UA</span>
+                                    <span class="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-300">Localization</span>
+                                </div>
+                            </div>
+                            
+                            <div onclick="openProjectModal('trans_2')" class="group bg-darkbg p-5 rounded-xl border border-white/5 hover:border-emerald-500/50 cursor-pointer transition-all hover:scale-[1.01]">
+                                <div class="h-44 rounded-lg bg-gray-800 mb-4 flex items-center justify-center p-6 text-center bg-gradient-to-br from-emerald-900/20 to-teal-900/20 group-hover:scale-105 transition-transform duration-300">
+                                    <i class="fa-solid fa-closed-captioning text-5xl text-emerald-400"></i>
+                                </div>
+                                <h5 data-i18n="p4_item2_title" class="font-bold text-white mb-1 group-hover:text-emerald-400 transition-colors">Субтитри та Дубляж</h5>
+                                <p data-i18n="p4_item2_desc" class="text-xs text-gray-400 mb-3 line-clamp-2">Створення точних таймкодів, переклад та таймінг субтитрів для YouTube.</p>
+                                <div class="flex gap-2">
+                                    <span class="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-300">SRT</span>
+                                    <span class="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-300">Subtitles</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-16 border-t border-white/5">
+            <div class="bg-cardbg border border-white/5 rounded-3xl p-8 md:p-12 text-center relative overflow-hidden">
+                <div class="absolute -top-24 -right-24 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                
+                <h2 data-i18n="contact_subtitle" class="text-xs uppercase tracking-widest text-indigo-400 font-semibold mb-2">Контакти</h2>
+                <h3 data-i18n="contact_title" class="text-3xl md:text-4xl font-bold text-white mb-4">Маєте цікавий проєкт?</h3>
+                <p data-i18n="contact_desc" class="text-gray-400 max-w-lg mx-auto mb-8 font-light text-sm leading-relaxed">
+                    Я завжди відкритий до нових пропозицій щодо дизайну, монтажу, анімації або перекладів. Зв'яжіться зі мною зручним способом!
+                </p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <a href="mailto:hello@funphen.com" class="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm transition-all shadow-lg shadow-indigo-500/25">
+                        <i class="fa-regular fa-envelope"></i>
+                        <span>hello@funphen.com</span>
+                    </a>
+                    <a href="https://t.me" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-cardbg border border-white/10 hover:bg-white/5 text-white font-semibold text-sm transition-all">
+                        <i class="fa-brands fa-telegram text-indigo-400"></i>
+                        <span>Telegram</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- PROJECT MODAL OVERLAY -->
+    <div id="projectModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-10 hidden modal-overlay bg-black/80 animate-fade-in" onclick="handleModalBackdropClick(event)">
+        <!-- Modal Window Container -->
+        <div class="bg-modalbg border border-white/10 rounded-3xl w-full max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl relative flex flex-col my-auto" onclick="event.stopPropagation()">
+            
+            <!-- Sticky Modal Header -->
+            <div class="sticky top-0 z-10 bg-modalbg/90 backdrop-blur-md px-6 py-4 border-b border-white/5 flex items-center justify-between">
+                <div>
+                    <span id="modalCategory" class="text-[11px] uppercase tracking-wider font-semibold text-indigo-400">Категорія</span>
+                    <h3 id="modalTitle" class="text-xl md:text-2xl font-bold text-white">Назва проєкту</h3>
+                </div>
+                <button onclick="closeProjectModal()" class="w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white flex items-center justify-center transition-colors">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Modal Content Body -->
+            <div class="p-6 md:p-8 space-y-8">
+                
+                <!-- Main Media Display (Video or Main Image) -->
+                <div id="modalMediaContainer" class="w-full rounded-2xl overflow-hidden bg-black/50 border border-white/5 min-h-[220px] sm:min-h-[350px] flex items-center justify-center relative">
+                    <!-- Dynamic Video / Image content injected via JS -->
+                </div>
+
+                <!-- Structured Text Description -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Overview & Details (2 columns) -->
+                    <div class="md:col-span-2 space-y-6">
+                        <div>
+                            <h4 id="lbl_intro" class="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Опис та Завдання</h4>
+                            <p id="modalOverview" class="text-gray-300 text-sm leading-relaxed font-light">
+                                Детальний опис проєкту...
+                            </p>
+                        </div>
+
+                        <div>
+                            <h4 id="lbl_process" class="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Процес та Результат</h4>
+                            <p id="modalProcess" class="text-gray-300 text-sm leading-relaxed font-light">
+                                Опис процесу виконання та досягнутих результатів...
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar Stats / Tools (1 column) -->
+                    <div class="bg-white/[0.02] p-5 rounded-2xl border border-white/5 space-y-5 h-fit">
+                        <div>
+                            <h4 id="lbl_tools" class="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-3">Інструменти / Софт</h4>
+                            <div id="modalTools" class="flex flex-wrap gap-2">
+                                <!-- Dynamic tools badges -->
+                            </div>
+                        </div>
+
+                        <div class="border-t border-white/5 pt-4">
+                            <h4 id="lbl_date" class="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Термін виконання</h4>
+                            <span id="modalTimeline" class="text-sm font-medium text-white">2 тижні</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Image Gallery -->
+                <div id="gallerySection" class="space-y-4">
+                    <h4 id="lbl_gallery" class="text-xs font-semibold uppercase tracking-wider text-gray-400">Галерея зображень</h4>
+                    <div id="modalGallery" class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                        <!-- Dynamic Gallery Thumbnails -->
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="px-6 py-4 border-t border-white/5 bg-black/20 flex justify-end">
+                <button onclick="closeProjectModal()" class="px-5 py-2 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs font-semibold transition-all">
+                    Закрити
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <footer class="border-t border-white/5 py-8 text-center text-xs text-gray-500">
+        <div class="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p data-i18n="footer_rights">&copy; 2026 funphen. Всі права захищено.</p>
+            <div class="flex items-center space-x-6">
+                <a href="https://t.me" target="_blank" rel="noopener noreferrer" class="hover:text-gray-300 transition-colors">Telegram</a>
+                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="hover:text-gray-300 transition-colors">LinkedIn</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Database containing detailed information for each project in both UA & EN
+        const projectData = {
+            design_1: {
+                category: { uk: "Дизайн • UI/UX", en: "Design • UI/UX" },
+                title: { uk: "Редизайн мобільного додатку", en: "Mobile App Redesign" },
+                overview: { 
+                    uk: "Головна мета проєкту — розробка сучасного та інтуїтивно зрозумілого мобільного інтерфейсу для фінансового додатка. Було проведено аналіз користувацького досвіду (UX), виявлено слабкі місця попереднього дизайну та створено повністю оновлену концепцію.",
+                    en: "The primary goal of this project was to create a modern and intuitive mobile user interface for a fintech application. Conducted thorough UX research, identified pain points of the legacy design, and developed a clean concept."
+                },
+                process: {
+                    uk: "Створено інтерактивні прототипи у Figma, налаштовано систему компонентів та дизайн-токенів. Провірено зручність навігації на тестувальниках та впроваджено адаптивну темну та светлу теми.",
+                    en: "Created interactive prototypes in Figma, built a design system with reusable components and tokens. Conducted usability testing and implemented sleek dark and light themes."
+                },
+                timeline: "2026 • 3 тижні / weeks",
+                tools: ["Figma", "UI/UX", "Prototyping", "Design System"],
+                mediaType: "image",
+                mainMedia: "https://placehold.co/1200x700/2a2a38/ffffff?text=Mobile+App+UI+Preview",
+                gallery: [
+                    "https://placehold.co/600x400/2a2a38/ffffff?text=Dashboard+Screen",
+                    "https://placehold.co/600x400/2a2a38/ffffff?text=Analytics+View",
+                    "https://placehold.co/600x400/2a2a38/ffffff?text=User+Profile"
+                ]
+            },
+            design_2: {
+                category: { uk: "Дизайн • Айдентика", en: "Design • Branding" },
+                title: { uk: "Брендинг та Айдентика для IT-стартапу", en: "Branding & Identity for Tech Startup" },
+                overview: { 
+                    uk: "Розробка комплексного фірмового стилю для фінтех-стартапу. Проєкт включав створення логотипа, кольорової палітри, типографіки, оформлення ділової документації та соцмереж.",
+                    en: "Development of a comprehensive visual identity for a tech startup. Included logo design, color palette, typography guidelines, stationery, and social media branding templates."
+                },
+                process: {
+                    uk: "Розроблено концепт логотипа, підібрано шрифтові пари та створено вичерпний брендбук для збереження єдності стилю компанії на всіх платформах.",
+                    en: "Designed multiple logo concepts, curated typography pairings, and structured a comprehensive brandbook to ensure consistency across digital and print touchpoints."
+                },
+                timeline: "2026 • 2 тижні / weeks",
+                tools: ["Adobe Illustrator", "Photoshop", "Brandbook"],
+                mediaType: "image",
+                mainMedia: "https://placehold.co/1200x700/2a2a38/ffffff?text=Branding+Identity+Showcase",
+                gallery: [
+                    "https://placehold.co/600x400/2a2a38/ffffff?text=Logo+Grid",
+                    "https://placehold.co/600x400/2a2a38/ffffff?text=Color+Palette",
+                    "https://placehold.co/600x400/2a2a38/ffffff?text=Stationery+Mockup"
+                ]
+            },
+            anim_1: {
+                category: { uk: "Анімація • Motion Design", en: "Animation • Motion Design" },
+                title: { uk: "2D Анімація Логотипа", en: "2D Animated Logo Reveal" },
+                overview: { 
+                    uk: "Динамічна 2D анімація логотипа для використання у вступах відео, рекламних роликах та презентаціях. Акцент зроблено на плавності та сучасному ритмі.",
+                    en: "Dynamic 2D logo animation reveal designed for video intros, social media ads, and corporate presentations. Focused on smooth physics and timing."
+                },
+                process: {
+                    uk: "Векторне розділення шарів в Illustrator, анімація геометрії та оптимізація шейпів у After Effects з додаванням саунд-дизайну.",
+                    en: "Vector layer preparation in Illustrator, keyframe geometry animation in After Effects, and sound design layer synchronization."
+                },
+                timeline: "2026 • 4 дні / days",
+                tools: ["After Effects", "Illustrator", "Motion Graphics"],
+                mediaType: "video",
+                videoSrc: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+                gallery: [
+                    "https://placehold.co/600x400/382a38/ffffff?text=Keyframe+Design",
+                    "https://placehold.co/600x400/382a38/ffffff?text=Vector+Layers"
+                ]
+            },
+            anim_2: {
+                category: { uk: "Анімація • 3D Render", en: "Animation • 3D Render" },
+                title: { uk: "3D Презентація Продукту", en: "3D Product Presentation" },
+                overview: { 
+                    uk: "Створення тривимірної моделі, текстурування та анімації для технологічного гаджета. Ролик транслює преміальність та технологічність пристрою.",
+                    en: "Creation of a 3D model, realistic procedural texturing, and cinematic camera animation for a tech product line launch."
+                },
+                process: {
+                    uk: "3D-моделювання в Blender, налаштування реалістичних матеріалів (PBR), постановка студійного світла та рендеринг у Cycles.",
+                    en: "3D modeling in Blender, PBR material creation, studio lighting setup, and final frame rendering in Cycles."
+                },
+                timeline: "2026 • 2 тижні / weeks",
+                tools: ["Blender", "3D Rendering", "Cycles", "Octane"],
+                mediaType: "image",
+                mainMedia: "https://placehold.co/1200x700/382a38/ffffff?text=3D+Product+Render+Preview",
+                gallery: [
+                    "https://placehold.co/600x400/382a38/ffffff?text=Viewport+Mesh",
+                    "https://placehold.co/600x400/382a38/ffffff?text=Material+Nodes",
+                    "https://placehold.co/600x400/382a38/ffffff?text=Lighting+Setup"
+                ]
+            },
+            edit_1: {
+                category: { uk: "Монтаж • Відеореклама", en: "Editing • Commercial Video" },
+                title: { uk: "Динамічний Промо-ролик", en: "Dynamic Promo Commercial" },
+                overview: { 
+                    uk: "Енергійний відеомонтаж рекламного ролика з акцентом на ритм, ефектні переходи, саунд-дизайн та професійну колірнокорекцію.",
+                    en: "Fast-paced promo commercial editing with rhythmic cut synchronization, sound design, visual effects, and cinematic color grading."
+                },
+                process: {
+                    uk: "Відбір кращих дублів, робота зі звуковою доріжкою, накладання саунд-ефектів (SFX) та фінальна графічна адаптація субтитрів.",
+                    en: "Raw footage selection, audio beat matching, custom SFX placement, grading in Premiere Pro, and graphic title overlays."
+                },
+                timeline: "2026 • 1 тиждень / week",
+                tools: ["Premiere Pro", "Color Grading", "Sound Design", "SFX"],
+                mediaType: "video",
+                videoSrc: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+                gallery: [
+                    "https://placehold.co/600x400/382a2e/ffffff?text=Timeline+Tracks",
+                    "https://placehold.co/600x400/382a2e/ffffff?text=Color+Grading+LUTs"
+                ]
+            },
+            edit_2: {
+                category: { uk: "Монтаж • Social Media", en: "Editing • Social Media" },
+                title: { uk: "Серія Reels & Shorts", en: "Short-form Content Series" },
+                overview: { 
+                    uk: "Створення серії вертикальних відео (Reels, TikTok, Shorts) для блогу з привабливими анімованими субтитрами та вставками.",
+                    en: "Production of vertical videos (Reels, TikTok, Shorts) featuring high-retention animated captions, graphic overlays, and sound cues."
+                },
+                process: {
+                    uk: "Монтаж під трендові аудіодоріжки, автогенерація та стилізація субтитрів, додавання моушн-елементів для утримання уваги глядача.",
+                    en: "Editing synced to trending music, caption styling, motion graphics insertion, and export optimization for social platforms."
+                },
+                timeline: "2026 • 3 дні / days",
+                tools: ["CapCut", "Premiere Pro", "Subtitles", "Vertical Video"],
+                mediaType: "image",
+                mainMedia: "https://placehold.co/1200x700/382a2e/ffffff?text=Reels+%26+Shorts+Preview",
+                gallery: [
+                    "https://placehold.co/600x400/382a2e/ffffff?text=Vertical+Format",
+                    "https://placehold.co/600x400/382a2e/ffffff?text=Caption+Styles"
+                ]
+            },
+            trans_1: {
+                category: { uk: "Переклади • Локалізація", en: "Translations • Localization" },
+                title: { uk: "Локалізація Вебсайту", en: "Full Website Localization" },
+                overview: { 
+                    uk: "Повна адаптація вебсайту та інтерфейсу користувача з англійської мови на українську та навпаки з урахуванням контексту та термінології.",
+                    en: "End-to-end web content localization from English to Ukrainian and vice versa, preserving technical terminology and tone of voice."
+                },
+                process: {
+                    uk: "Складання глосарія термінів, переклад текстівок, адаптація системних повідомлень та перевірка коректності відображення в UI.",
+                    en: "Glossary creation, precise contextual translation, string adaptation for UI layout constraints, and linguistic QA."
+                },
+                timeline: "2026 • 5 днів / days",
+                tools: ["EN - UA", "Localization", "Glossary", "UI Translation"],
+                mediaType: "image",
+                mainMedia: "https://placehold.co/1200x700/1e3a34/ffffff?text=Website+Localization+Preview",
+                gallery: [
+                    "https://placehold.co/600x400/1e3a34/ffffff?text=Translation+Glossary",
+                    "https://placehold.co/600x400/1e3a34/ffffff?text=Language+Strings"
+                ]
+            },
+            trans_2: {
+                category: { uk: "Переклади • Субтитри", en: "Translations • Subtitles" },
+                title: { uk: "Субтитри та Таймінг", en: "Subtitles & Video Dubbing" },
+                overview: { 
+                    uk: "Створення точних субтитрів у форматі SRT для освітніх та розважальних YouTube відео з повним збереженням таймкодів.",
+                    en: "Creation of time-synced SRT subtitles for educational YouTube content, ensuring natural reading speed and accurate phrasing."
+                },
+                process: {
+                    uk: "Транскрибація аудіодоріжки, переклад змісту, розстановка точних таймкодів та фінальна перевірка синхронності з мовленням.",
+                    en: "Audio transcription, target translation, subtitle timecoding adjustment, and synchronization verification against dialogue."
+                },
+                timeline: "2026 • 2 дні / days",
+                tools: ["SRT", "Subtitles", "Timecoding", "YouTube Translation"],
+                mediaType: "image",
+                mainMedia: "https://placehold.co/1200x700/1e3a34/ffffff?text=Subtitle+Project+Preview",
+                gallery: [
+                    "https://placehold.co/600x400/1e3a34/ffffff?text=SRT+Editor",
+                    "https://placehold.co/600x400/1e3a34/ffffff?text=Timecode+Sync"
+                ]
+            }
+        };
+
+        const translations = {
+            uk: {
+                nav_about: "Про мене",
+                nav_stats: "Статистика",
+                nav_projects: "Проєкти",
+                nav_contact: "Контакти",
+                nav_cta: "Зв'язатися",
+                
+                about_badge: "Портфоліо",
+                about_title: "Про мене",
+                about_desc: "Вітаю! Я створюю якісний візуальний контент, займаюся графічним та веб-дизайном, 2D/3D анімацією, відеомонтажем та професійними перекладами. Орієнтуюся на високу якість, стиль та деталі у кожному проєкті.",
+                btn_view_projects: "Переглянути проєкти",
+                btn_contact_me: "Написати мені",
+                
+                stats_subtitle: "Статистика",
+                stats_title: "Завершені проєкти за напрямками",
+                stat_completed: "Завершених проєктів",
+                
+                cat_design: "Дизайн",
+                cat_animation: "Анімації",
+                cat_editing: "Монтаж",
+                cat_translation: "Переклади",
+                
+                projects_subtitle: "Портфоліо",
+                projects_title: "Категорії проєктів",
+                projects_desc: "Натисніть на категорію, щоб розгорнути її, а потім на будь-яку картку для перегляду у модальному вікні.",
+                lbl_open_modal: "Відкрити проєкт",
+                
+                acc_1_title: "1. Дизайн",
+                acc_1_sub: "15+ завершених проєктів • UI/UX, Брендінг, Графіка",
+                p1_item1_title: "Редизайн мобільного додатку",
+                p1_item1_desc: "Сучасний та мінімалістичний дизайн інтерфейсу з акцентом на UX.",
+                p1_item2_title: "Брендинг та Айдентика",
+                p1_item2_desc: "Розробка айдентики, логотипа та брендбука для IT-стартапу.",
+                
+                acc_2_title: "2. Анімації",
+                acc_2_sub: "10+ завершених проєктів • Motion Design, 2D/3D Анімація",
+                p2_item1_title: "Анімація Логотипа",
+                p2_item1_desc: "Плавний 2D моушн-дизайн логотипа для промо-ролика.",
+                p2_item2_title: "3D Презентація Продукту",
+                p2_item2_desc: "Тривимірна анімація гаджета з динамічним освітленням.",
+                
+                acc_3_title: "3. Монтаж",
+                acc_3_sub: "25+ завершених проєктів • YouTube, Reels/TikTok, Відеореклама",
+                p3_item1_title: "Динамічна Відеореклама",
+                p3_item1_desc: "Швидкий монтаж, саунд-дизайн та колірнокорекція для рекламного ролика.",
+                p3_item2_title: "Серія Reels / Shorts",
+                p3_item2_desc: "Короткі динамічні відео з субтитрами та ефектами для соцмереж.",
+                
+                acc_4_title: "4. Переклади",
+                acc_4_sub: "40+ завершених проєктів • Локалізація, Субтитри, Документація",
+                p4_item1_title: "Локалізація Вебсайту",
+                p4_item1_desc: "Повний переклад та адаптація контенту для англомовної аудиторії.",
+                p4_item2_title: "Субтитри та Дубляж",
+                p4_item2_desc: "Створення точних таймкодів, переклад та таймінг субтитрів для YouTube.",
+                
+                contact_subtitle: "Контакти",
+                contact_title: "Маєте цікавий проєкт?",
+                contact_desc: "Я завжди відкритий до нових пропозицій щодо дизайну, монтажу, анімації або перекладів. Зв'яжіться зі мною зручним способом!",
+                
+                lbl_intro: "Опис та Завдання",
+                lbl_process: "Процес та Результат",
+                lbl_tools: "Інструменти / Софт",
+                lbl_date: "Термін виконання",
+                lbl_gallery: "Галерея зображень",
+
+                footer_rights: "© 2026 funphen. Всі права захищено."
+            },
+            en: {
+                nav_about: "About me",
+                nav_stats: "Statistics",
+                nav_projects: "Projects",
+                nav_contact: "Contact",
+                nav_cta: "Get in touch",
+                
+                about_badge: "Portfolio",
+                about_title: "About Me",
+                about_desc: "Hello! I create high-quality digital experiences, specializing in graphic & web design, 2D/3D animation, video editing, and professional translation. Focused on precision, aesthetics, and details.",
+                btn_view_projects: "View Projects",
+                btn_contact_me: "Contact Me",
+                
+                stats_subtitle: "Statistics",
+                stats_title: "Completed Projects by Category",
+                stat_completed: "Completed Projects",
+                
+                cat_design: "Design",
+                cat_animation: "Animation",
+                cat_editing: "Video Editing",
+                cat_translation: "Translations",
+                
+                projects_subtitle: "Portfolio",
+                projects_title: "Project Categories",
+                projects_desc: "Click on any category to expand it, then click any card to view detailed modal preview.",
+                lbl_open_modal: "Open Project",
+                
+                acc_1_title: "1. Design",
+                acc_1_sub: "15+ completed projects • UI/UX, Branding, Graphics",
+                p1_item1_title: "Mobile App Redesign",
+                p1_item1_desc: "Modern and minimalist UI design focusing on user experience.",
+                p1_item2_title: "Branding & Identity",
+                p1_item2_desc: "Complete visual identity, logo design, and brandbook for an IT startup.",
+                
+                acc_2_title: "2. Animation",
+                acc_2_sub: "10+ completed projects • Motion Design, 2D/3D Animation",
+                p2_item1_title: "Logo Animation",
+                p2_item1_desc: "Smooth 2D motion graphics and logo reveal for promotional videos.",
+                p2_item2_title: "3D Product Showcase",
+                p2_item2_desc: "Three-dimensional product animation with dynamic lighting.",
+                
+                acc_3_title: "3. Video Editing",
+                acc_3_sub: "25+ completed projects • YouTube, Reels/TikTok, Commercials",
+                p3_item1_title: "Dynamic Commercial Video",
+                p3_item1_desc: "Fast-paced video editing, sound design, and color grading for commercials.",
+                p3_item2_title: "Reels & Shorts Series",
+                p3_item2_desc: "Engaging short-form videos with custom captions and motion effects.",
+                
+                acc_4_title: "4. Translations",
+                acc_4_sub: "40+ completed projects • Localization, Subtitles, Documentation",
+                p4_item1_title: "Website Localization",
+                p4_item1_desc: "Full translation and cultural adaptation of web content.",
+                p4_item2_title: "Subtitles & Dubbing",
+                p4_item2_desc: "Accurate timing, translation, and subtitle generation for video content.",
+                
+                contact_subtitle: "Contact",
+                contact_title: "Have a project in mind?",
+                contact_desc: "I am always open to new opportunities in design, animation, video editing, or translation. Reach out anytime!",
+                
+                lbl_intro: "Overview & Goals",
+                lbl_process: "Process & Results",
+                lbl_tools: "Tools / Software",
+                lbl_date: "Project Timeline",
+                lbl_gallery: "Image Gallery",
+
+                footer_rights: "© 2026 funphen. All rights reserved."
+            }
+        };
+
+        let currentLang = 'uk';
+        let activeProjectKey = null;
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'uk' ? 'en' : 'uk';
+            document.documentElement.lang = currentLang;
+            
+            document.getElementById('lang-label').textContent = currentLang === 'uk' ? 'UA / EN' : 'EN / UA';
+            
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[currentLang][key]) {
+                    el.textContent = translations[currentLang][key];
+                }
+            });
+
+            // Re-render modal if currently open
+            if (activeProjectKey) {
+                renderModalContent(activeProjectKey);
+            }
+        }
+
+        function toggleAccordion(id) {
+            const content = document.getElementById(`acc-content-${id}`);
+            const icon = document.getElementById(`acc-icon-${id}`);
+            
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.classList.add('rotate-180');
+            } else {
+                content.classList.add('hidden');
+                icon.classList.remove('rotate-180');
+            }
+        }
+
+        // Modal Functionality
+        function openProjectModal(key) {
+            activeProjectKey = key;
+            renderModalContent(key);
+            const modal = document.getElementById('projectModal');
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; // Lock background scroll
+        }
+
+        function closeProjectModal() {
+            const modal = document.getElementById('projectModal');
+            modal.classList.add('hidden');
+            document.body.style.overflow = ''; // Restore scroll
+            
+            // Stop any playing HTML5 video when modal is closed
+            const mediaContainer = document.getElementById('modalMediaContainer');
+            mediaContainer.innerHTML = '';
+            activeProjectKey = null;
+        }
+
+        function handleModalBackdropClick(event) {
+            if (event.target.id === 'projectModal') {
+                closeProjectModal();
+            }
+        }
+
+        function renderModalContent(key) {
+            const data = projectData[key];
+            if (!data) return;
+
+            // Set Title & Category
+            document.getElementById('modalCategory').textContent = data.category[currentLang];
+            document.getElementById('modalTitle').textContent = data.title[currentLang];
+
+            // Set Description Texts
+            document.getElementById('modalOverview').textContent = data.overview[currentLang];
+            document.getElementById('modalProcess').textContent = data.process[currentLang];
+            document.getElementById('modalTimeline').textContent = data.timeline;
+
+            // Set Labels
+            document.getElementById('lbl_intro').textContent = translations[currentLang].lbl_intro;
+            document.getElementById('lbl_process').textContent = translations[currentLang].lbl_process;
+            document.getElementById('lbl_tools').textContent = translations[currentLang].lbl_tools;
+            document.getElementById('lbl_date').textContent = translations[currentLang].lbl_date;
+            document.getElementById('lbl_gallery').textContent = translations[currentLang].lbl_gallery;
+
+            // Render Media Container (Video or Image)
+            const mediaContainer = document.getElementById('modalMediaContainer');
+            if (data.mediaType === 'video') {
+                mediaContainer.innerHTML = `
+                    <video controls autoplay loop class="w-full h-auto max-h-[450px] rounded-xl">
+                        <source src="${data.videoSrc}" type="video/mp4">
+                        Your browser does not support video playback.
+                    </video>
+                `;
+            } else {
+                mediaContainer.innerHTML = `
+                    <img src="${data.mainMedia}" alt="${data.title[currentLang]}" class="w-full h-auto max-h-[450px] object-cover rounded-xl">
+                `;
+            }
+
+            // Render Tools / Stack Badges
+            const toolsContainer = document.getElementById('modalTools');
+            toolsContainer.innerHTML = data.tools.map(tool => `
+                <span class="px-2.5 py-1 rounded-md bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-medium">
+                    ${tool}
+                </span>
+            `).join('');
+
+            // Render Gallery Images
+            const galleryContainer = document.getElementById('modalGallery');
+            if (data.gallery && data.gallery.length > 0) {
+                document.getElementById('gallerySection').classList.remove('hidden');
+                galleryContainer.innerHTML = data.gallery.map(imgUrl => `
+                    <div class="h-28 rounded-xl bg-gray-800 overflow-hidden border border-white/5 hover:border-indigo-500/40 transition-all">
+                        <img src="${imgUrl}" alt="Gallery image" class="w-full h-full object-cover hover:scale-110 transition-transform duration-300">
+                    </div>
+                `).join('');
+            } else {
+                document.getElementById('gallerySection').classList.add('hidden');
+            }
+        }
+
+        // Close Modal with ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeProjectModal();
+            }
+        });
+    </script>
+</body>
+</html>
