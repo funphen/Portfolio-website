@@ -47,8 +47,8 @@ var CATEGORIES = [
   { id: 'design', title: T('Дизайн', 'Design'), projects: [
     { name: T('Обкладинки', 'Covers') },
     { name: T('Постери', 'Posters'),
-    { title: T('Перша обкладинка', 'First cover'),
      works: [
+    { title: T('Перша обкладинка', 'First cover'),
       img: 'assets/images/poster-1.webp' }
      ]
     { name: T('Айдентика', 'Identity') },
