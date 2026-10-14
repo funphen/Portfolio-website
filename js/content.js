@@ -48,6 +48,7 @@ var CATEGORIES = [
     { name: T('Обкладинки', 'Covers') },
     { name: T('Постери', 'Posters'),
     { title: T('Перша обкладинка', 'First cover'),
+     works: [
       img: 'assets/images/poster-1.webp' }
      ]
     { name: T('Айдентика', 'Identity') },
