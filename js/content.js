@@ -46,11 +46,7 @@ var SITE = {
 var CATEGORIES = [
   { id: 'design', title: T('Дизайн', 'Design'), projects: [
     { name: T('Обкладинки', 'Covers') },
-    { name: T('Постери', 'Posters'),
-     works: [
-    { title: T('Перша обкладинка', 'First cover'),
-      img: 'assets/images/poster-1.webp' }
-     ]
+    { name: T('Постери', 'Posters') }
     { name: T('Айдентика', 'Identity') },
     { name: T('Ігрові концепти', 'Game concepts') },
     { name: 'Ridge Boots' },
