@@ -45,7 +45,16 @@ var SITE = {
 */
 var CATEGORIES = [
   { id: 'design', title: T('Дизайн', 'Design'), projects: [
-    { name: T('Обкладинки', 'Covers') },
+    { name: T('Обкладинки', 'Covers'),
+  works: [
+    { title: T('Перша обкладинка', 'First cover'),
+      img: 'assets/images/poster-1.webp' },
+    { title: T('Друга обкладинка', 'Second cover'),
+      img: 'assets/images/poster-2.webp' },
+    { title: T('Третя обкладинка', 'Third cover'),
+      img: 'assets/images/poster-3.webp' }
+  ]
+},	},
     { name: T('Постери', 'Posters') },
     { name: T('Айдентика', 'Identity') },
     { name: T('Ігрові концепти', 'Game concepts') },
