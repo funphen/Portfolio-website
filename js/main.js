@@ -21,19 +21,98 @@
     var m = String(u || '').match(/vimeo\.com\/(?:video\/)?(\d+)/);
     return m ? m[1] : null;
   }
-  function videoHTML(u) {
+  function videoHTML(u, w) {
     var y = ytId(u), v = vimeoId(u);
     if (y) return '<iframe src="https://www.youtube-nocookie.com/embed/' + y + '" title="Video" loading="lazy" allow="accelerometer; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>';
     if (v) return '<iframe src="https://player.vimeo.com/video/' + v + '" title="Video" loading="lazy" allow="fullscreen; picture-in-picture" allowfullscreen></iframe>';
-    return '<video controls playsinline preload="metadata" src="' + esc(u) + '"></video>';
+    var poster = (w && w.poster) ? ' poster="' + esc(w.poster) + '"' : '';
+    return '<video controls playsinline preload="metadata"' + poster + ' src="' + esc(u) + '"></video>';
   }
+
+  /* сторінки книги: dir + p-01.webp … (кількість цифр залежить від count) */
+  function bookPages(w) {
+    var b = w.book, out = [], pad = String(b.count).length, i, n;
+    for (i = 1; i <= b.count; i++) {
+      n = String(i);
+      while (n.length < pad) n = '0' + n;
+      out.push(b.dir + 'p-' + n + '.' + (b.ext || 'webp'));
+    }
+    return out;
+  }
+  var ARROW_L = '<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M20 12H4M10 6L4 12L10 18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"/></svg>';
+  var ARROW_R = '<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M4 12H20M14 6L20 12L14 18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"/></svg>';
+
+  function imgList(w) { return Array.isArray(w.img) ? w.img : (w.img ? [w.img] : []); }
   function cover(w) {
-    if (w.img) return w.img;
+    var l = imgList(w);
+    if (l.length) return l[0];
+    if (w.book && w.book.count) return bookPages(w)[0];
     var y = ytId(w.video);
     return y ? 'https://i.ytimg.com/vi/' + y + '/hqdefault.jpg' : null;
   }
-  function imgTag(src, w, lazy) {
-    return '<img src="' + esc(src) + '" alt="' + esc(plain(w.alt || w.title)) + '"' + (lazy ? ' loading="lazy" decoding="async"' : '') + '>';
+  function imgTag(src, w, lazy, cls) {
+    return '<img' + (cls ? ' class="' + cls + '"' : '') + ' src="' + esc(src) + '" alt="' + esc(plain(w.alt || w.title)) + '"' + (lazy ? ' loading="lazy" decoding="async"' : '') + '>';
+  }
+  /* one picture, or a stack of pictures that crossfade into each other */
+  function mediaImgs(w, lazy) {
+    var l = imgList(w);
+    if (l.length > 1) {
+      return '<span class="fade">' + l.map(function (s, i) {
+        return imgTag(s, w, lazy, i === 0 ? 'is-active' : '');
+      }).join('') + '</span>';
+    }
+    return imgTag(l[0] || cover(w), w, lazy);
+  }
+
+  var fadeTimers = [];
+  var hoverResets = [];
+  function stopFades() {
+    fadeTimers.forEach(function (t) { clearTimeout(t); clearInterval(t); });
+    fadeTimers = [];
+    hoverResets.forEach(function (r) { r(); });
+    hoverResets = [];
+  }
+  /* project window: images crossfade only while the cursor (or keyboard focus) is on a work */
+  function hoverFades(scope) {
+    [].forEach.call(scope.querySelectorAll('.work'), function (a) {
+      var im = a.querySelectorAll('.fade img'), cur = 0, iv = null;
+      if (im.length < 2) return;
+      function show(i) {
+        im[cur].classList.remove('is-active');
+        cur = i;
+        im[cur].classList.add('is-active');
+      }
+      function enter() {
+        if (iv) return;
+        show((cur + 1) % im.length);
+        iv = setInterval(function () { show((cur + 1) % im.length); }, 1400);
+      }
+      function leave() {
+        if (iv) { clearInterval(iv); iv = null; }
+        if (cur !== 0) show(0);
+      }
+      a.addEventListener('mouseenter', enter);
+      a.addEventListener('mouseleave', leave);
+      a.addEventListener('focus', enter);
+      a.addEventListener('blur', leave);
+      hoverResets.push(leave);
+    });
+  }
+  function startFades(scope) {
+    var gap = reduce ? 7000 : 3600;
+    [].forEach.call(scope.querySelectorAll('.fade'), function (f, n) {
+      var im = f.querySelectorAll('img'), cur = 0;
+      if (im.length < 2) return;
+      function step() {
+        im[cur].classList.remove('is-active');
+        cur = (cur + 1) % im.length;
+        im[cur].classList.add('is-active');
+      }
+      fadeTimers.push(setTimeout(function () {
+        step();
+        fadeTimers.push(setInterval(step, gap));
+      }, 1500 + n * 600));
+    });
   }
 
   /* ---------- categories ---------- */
@@ -93,7 +172,7 @@
       var inner = src
         ? '<img src="' + esc(src) + '" alt="" loading="lazy" decoding="async">'
         : both({ uk: 'Робота 0' + (k + 1), en: 'Work 0' + (k + 1) });
-      return '<figure class="slide"><div class="tile">' + inner + '</div></figure>';
+      return '<figure class="slide"><div class="tile' + (src ? ' has-media' : '') + '">' + inner + '</div></figure>';
     }).join('');
     track.innerHTML = set +
       '<div style="display:contents" aria-hidden="true">' + set + set + '</div>';
@@ -118,6 +197,11 @@
     });
   });
 
+  var bookInst = null;
+  function destroyBook() {
+    if (bookInst) { bookInst.destroy(); bookInst = null; }
+  }
+
   var modal = document.getElementById('modal'),
       mGrid = document.getElementById('modalGrid'),
       mTitle = document.getElementById('modalTitle'),
@@ -129,8 +213,8 @@
 
   function tile(w) {
     var c = cover(w);
-    return '<div class="tile">' + (c ? imgTag(c, w, true) : both(w.title)) +
-      (w.video ? '<span class="play" aria-hidden="true"></span>' : '') + '</div>';
+    return '<div class="tile' + (c ? ' has-media' : '') + '">' + (c ? mediaImgs(w, true) : both(w.title)) +
+      (w.video && !w.book ? '<span class="play" aria-hidden="true"></span>' : '') + '</div>';
   }
 
   function openModal(pid) {
@@ -139,6 +223,8 @@
     mGrid.innerHTML = P.works.map(function (w) {
       return '<a class="work" href="#/w/' + w.id + '">' + tile(w) + '</a>';
     }).join('');
+    stopFades();
+    hoverFades(mGrid);
     if (!modalOpen) lastFocus = document.activeElement;
     modalOpen = true;
     modal.inert = false;
@@ -152,6 +238,7 @@
   function closeModal() {
     if (!modalOpen) return;
     modalOpen = false;
+    stopFades();
     modal.classList.remove('is-open');
     modal.inert = true;
     mainEl.inert = false; topbar.inert = false;
@@ -160,6 +247,8 @@
   }
 
   function showHome() {
+    stopFades();
+    destroyBook();
     pageEl.hidden = true;
     mainEl.hidden = false;
   }
@@ -167,11 +256,31 @@
   function showPage(wid) {
     var w = WORK[wid], P = PROJ[w.pid], ws = P.works;
     var prev = ws[(w.k + ws.length - 1) % ws.length], next = ws[(w.k + 1) % ws.length];
-    var real = !!(w.img || w.video);
+    var hasBook = !!(w.book && w.book.count);
+    var hasImg = imgList(w).length > 0;
+    var real = !!(hasImg || w.video || hasBook);
 
-    var heroCls = 'tile page-hero' + (w.video ? ' is-media' : (w.img ? ' is-photo' : ''));
-    var heroIn = w.video ? videoHTML(w.video)
-               : (w.img ? imgTag(w.img, w) : both({ uk: 'Головне зображення', en: 'Main image' }));
+    stopFades();
+    destroyBook();
+
+    var heroHTML;
+    if (hasBook) {
+      /* книга, що гортається; відео (якщо є) іде нижче, окремим блоком */
+      heroHTML = '<div class="book-host" id="bookHost"></div>';
+    } else {
+      var heroCls = 'tile page-hero' + (w.video ? ' is-media' : (hasImg ? ' is-photo' : ''));
+      var heroIn = w.video ? videoHTML(w.video, w)
+                 : (hasImg ? mediaImgs(w, false) : both({ uk: 'Головне зображення', en: 'Main image' }));
+      heroHTML = '<div class="' + heroCls + '">' + heroIn + '</div>';
+    }
+
+    var videoBlock = '';
+    if (hasBook && w.video) {
+      var vp = String(w.videoRatio || '16/9').split('/');
+      var vrn = (+vp[0]) / (+vp[1]) || (16 / 9);
+      videoBlock = '<div class="video-block' + (vrn < 1 ? ' is-portrait' : '') + '" style="--vr:' + (w.videoRatio || '16/9') + ';--vrn:' + vrn.toFixed(4) + '">' +
+        videoHTML(w.video, w) + '</div>';
+    }
 
     var meta =
       '<h3>' + both({ uk: 'Категорія', en: 'Category' }) + '</h3><p>' + both(P.cat.title) + '</p>' +
@@ -202,8 +311,8 @@
 
     var nav = ws.length > 1
       ? '<nav class="page-nav" aria-label="Works">' +
-          '<a href="#/w/' + prev.id + '">← ' + both(prev.title) + '</a>' +
-          '<a href="#/w/' + next.id + '">' + both(next.title) + ' →</a>' +
+          '<a href="#/w/' + prev.id + '" aria-label="Попередня робота / Previous work">' + ARROW_L + '</a>' +
+          '<a href="#/w/' + next.id + '" aria-label="Наступна робота / Next work">' + ARROW_R + '</a>' +
         '</nav>'
       : '';
 
@@ -211,12 +320,18 @@
       '<a class="back" href="#/p/' + P.id + '">' + both({ uk: '← Назад', en: '← Back' }) + '</a>' +
       '<div class="page-kicker">' + both(P.p.name) + '</div>' +
       '<h2 class="page-title">' + both(w.title) + '</h2>' +
-      '<div class="' + heroCls + '">' + heroIn + '</div>' +
+      heroHTML +
       '<div class="page-grid"><div>' + meta + '</div><div>' + blocks + '</div></div>' +
-      extra + nav;
+      videoBlock + extra + nav;
 
     mainEl.hidden = true;
     pageEl.hidden = false;
+    if (hasBook && window.FlipBook) {
+      bookInst = window.FlipBook(document.getElementById('bookHost'), {
+        pages: bookPages(w), ratio: w.book.ratio || 0.7, reduce: reduce
+      });
+    }
+    startFades(pageEl);
     window.scrollTo(0, 0);
   }
 
