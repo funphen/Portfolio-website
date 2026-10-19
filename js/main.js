@@ -125,7 +125,7 @@
     }).join('');
     return '<div class="cat" data-cat="' + c.id + '"><div class="cat-clip">' +
       '<button class="cat-head" type="button" aria-expanded="false" aria-controls="body-' + c.id + '">' +
-        '<span>' + both(c.title) + '<span class="count">' + c.projects.length + '</span></span>' +
+        '<span>' + both(c.title) + '</span>' +
       '</button>' +
       '<div class="cat-body" id="body-' + c.id + '"><div class="cat-body-inner"><ul class="plist">' + list + '</ul></div></div>' +
     '</div></div>';
@@ -146,8 +146,11 @@
     window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
   }
 
-  cats.forEach(function (c) {
+  cats.forEach(function (c, ci) {
+    var only = CATEGORIES[ci].projects.length === 1 ? CATEGORIES[ci] : null;
     c.querySelector('.cat-head').addEventListener('click', function () {
+      /* у категорії лише один проєкт — одразу відкриваємо його вікно, без проміжного списку */
+      if (only) { location.hash = '#/p/' + only.id + '-0'; return; }
       setOpen(c.classList.contains('is-open') ? null : c);
     });
   });
@@ -268,9 +271,63 @@
     [].forEach.call(bars, function (el) { io.observe(el); });
   }
 
-  var bookInst = null;
+  var bookInst = null, slidesInst = null;
   function destroyBook() {
     if (bookInst) { bookInst.destroy(); bookInst = null; }
+    if (slidesInst) { slidesInst.destroy(); slidesInst = null; }
+  }
+
+  /* слайдшоу з переливанням: саме гортається, а ще можна клікати вліво/вправо, стрілками чи клавішами ←/→ */
+  function slidesHTML(w) {
+    var list = bookPages({ book: w.slides }), r = String(w.slides.ratio || '16/9');
+    if (/^[\d.]+$/.test(r)) r = r + ' / 1';
+    return '<div class="slides" style="--sr:' + r.replace('/', ' / ') + '">' +
+      '<div class="slides-stage" tabindex="0" role="group" aria-roledescription="carousel">' +
+      list.map(function (src, i) {
+        return '<img src="' + esc(src) + '" alt="" draggable="false"' + (i === 0 ? ' class="is-active"' : ' loading="lazy"') + '>';
+      }).join('') +
+      '<span class="slides-hit l" data-d="-1"></span><span class="slides-hit r" data-d="1"></span></div>' +
+      '<div class="bk-ui"><button type="button" class="bk-btn" data-d="-1" aria-label="Назад / Prev">' + ARROW_L + '</button>' +
+      '<span class="bk-count" aria-live="polite">1 / ' + list.length + '</span>' +
+      '<button type="button" class="bk-btn" data-d="1" aria-label="Далі / Next">' + ARROW_R + '</button></div></div>';
+  }
+  function initSlides(root, interval) {
+    var host = root.querySelector('.slides'); if (!host) return null;
+    var imgs = host.querySelectorAll('.slides-stage img'), n = imgs.length, cur = 0, timer = null, hover = false;
+    var cnt = host.querySelector('.bk-count');
+    function go(k) {
+      imgs[cur].classList.remove('is-active');
+      cur = (k + n) % n;
+      imgs[cur].classList.add('is-active');
+      var nx = imgs[(cur + 1) % n]; if (nx && nx.loading === 'lazy') nx.loading = 'eager';
+      cnt.textContent = (cur + 1) + ' / ' + n;
+    }
+    function stop() { if (timer) { clearInterval(timer); timer = null; } }
+    function start() { stop(); if (!reduce && !hover) timer = setInterval(function () { go(cur + 1); }, interval || 4500); }
+    function step(d) { go(cur + d); start(); }
+    function onClick(e) {
+      var t = e.target.closest('[data-d]'); if (!t || !host.contains(t)) return;
+      step(+t.getAttribute('data-d'));
+    }
+    function onKey(e) {
+      if (!host.isConnected) return;
+      if (e.key === 'ArrowLeft') { step(-1); e.preventDefault(); }
+      else if (e.key === 'ArrowRight') { step(1); e.preventDefault(); }
+    }
+    function enter() { hover = true; stop(); } function leave() { hover = false; start(); }
+    host.addEventListener('click', onClick);
+    host.addEventListener('mouseenter', enter); host.addEventListener('mouseleave', leave);
+    document.addEventListener('keydown', onKey);
+    /* свайп на дотик */
+    var x0 = null;
+    host.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+    host.addEventListener('touchend', function (e) {
+      if (x0 == null) return; var dx = e.changedTouches[0].clientX - x0; x0 = null;
+      if (Math.abs(dx) > 40) { step(dx < 0 ? 1 : -1); e.preventDefault(); }
+    });
+    if (n > 1) imgs[1].loading = 'eager';
+    start();
+    return { destroy: function () { stop(); document.removeEventListener('keydown', onKey); } };
   }
 
   var modal = document.getElementById('modal'),
@@ -335,8 +392,11 @@
     stopFades();
     destroyBook();
 
+    var hasSlides = !!(w.slides && w.slides.count);
     var heroHTML;
-    if (hasBook) {
+    if (hasSlides) {
+      heroHTML = slidesHTML(w);
+    } else if (hasBook) {
       /* книга, що гортається; відео (якщо є) іде нижче, окремим блоком */
       heroHTML = '<div class="book-host" id="bookHost"></div>';
     } else if (hasCmp) {
@@ -396,6 +456,7 @@
       '<div class="page-kicker">' + both(P.p.name) + '</div>' +
       '<h2 class="page-title' + (longWord(w.title) ? ' long' : '') + '">' + both(w.title) + '</h2>' +
       heroHTML +
+      ((hasBook || hasSlides) && hasCmp ? mediaStack(w) : '') +
       '<div class="page-grid"><div>' + meta + '</div><div>' + blocks + '</div></div>' +
       videoBlock + extra + nav;
 
@@ -406,6 +467,7 @@
         pages: bookPages(w), ratio: w.book.ratio || 0.7, reduce: reduce, single: !!w.book.single
       });
     }
+    if (hasSlides) slidesInst = initSlides(pageEl, w.slides.interval);
     if (hasCmp) { initCmp(pageEl); initMeters(pageEl); }
     startFades(pageEl);
     window.scrollTo(0, 0);

@@ -105,20 +105,26 @@ var CATEGORIES = [
     },
     { name: T('Постери', 'Posters'),
       works: [
-        { title: T('Робота 01', 'Work 01'),
+        { title: 'Manchester',
+          tools: 'Adobe Photoshop',
           img: 'assets/images/poster-1.jpg' },
-        { title: T('Робота 02', 'Work 02'),
+        { title: 'Pixel hunt pt1',
+          tools: 'Adobe Photoshop',
           img: 'assets/images/poster-2.jpg' },
-        { title: T('Робота 03', 'Work 03'),
+        { title: 'Pixel hunt pt2',
+          tools: 'Adobe Photoshop',
           img: [
           'assets/images/poster-3-1.jpg',
           'assets/images/poster-3-2.jpg'
         ] },
-        { title: T('Робота 04', 'Work 04'),
+        { title: 'crime',
+          tools: 'Adobe Photoshop',
           img: 'assets/images/poster-4.jpg' },
-        { title: T('Робота 05', 'Work 05'),
+        { title: 'call 911',
+          tools: 'Adobe Photoshop',
           img: 'assets/images/poster-5.jpg' },
-        { title: T('Робота 06', 'Work 06'),
+        { title: 'evolution',
+          tools: 'Adobe Photoshop',
           img: [
           'assets/images/poster-6-1.jpg',
           'assets/images/poster-6-2.jpg',
@@ -126,38 +132,53 @@ var CATEGORIES = [
           'assets/images/poster-6-4.jpg',
           'assets/images/poster-6-5.jpg'
         ] },
-        { title: T('Робота 07', 'Work 07'),
+        { title: 'transmog',
+          tools: 'Adobe Illustrator',
           img: 'assets/images/poster-7.jpg' },
-        { title: T('Робота 08', 'Work 08'),
+        { title: 'sky',
+          tools: 'Adobe Photoshop',
           img: [
           'assets/images/poster-8-1.jpg',
           'assets/images/poster-8-2.jpg'
         ] },
-        { title: T('Робота 09', 'Work 09'),
+        { title: 'pixel hunt pt3',
+          tools: 'Adobe Photoshop',
           img: 'assets/images/poster-9.jpg' },
-        { title: T('Робота 10', 'Work 10'),
+        { title: 'autopsy',
+          tools: 'Adobe Photoshop',
           img: 'assets/images/poster-10.jpg' },
-        { title: T('Робота 11', 'Work 11'),
+        { title: 'who you are',
+          tools: 'Adobe Photoshop',
           img: 'assets/images/poster-11.jpg' },
-        { title: T('Робота 12', 'Work 12'),
+        { title: 'freedom',
+          tools: 'Adobe Photoshop',
           img: 'assets/images/poster-12.jpg' },
-        { title: T('Робота 13', 'Work 13'),
+        { title: 'hollywood',
+          tools: 'Adobe Photoshop',
           img: 'assets/images/poster-13.jpg' },
-        { title: T('Робота 14', 'Work 14'),
+        { title: 'impuls',
+          tools: 'Adobe Photoshop',
           img: 'assets/images/poster-14.jpg' },
-        { title: T('Робота 15', 'Work 15'),
+        { title: T('Новий твій', 'Your new'),
+          tools: 'Adobe Photoshop',
           img: 'assets/images/poster-15.jpg' },
-        { title: T('Робота 16', 'Work 16'),
+        { title: 'Stranger Things',
+          tools: 'Adobe Photoshop',
           img: 'assets/images/poster-16.jpg' },
-        { title: T('Робота 17', 'Work 17'),
+        { title: 'blood aquarelle',
+          tools: 'Adobe Photoshop',
           img: 'assets/images/poster-17.jpg' },
-        { title: T('Робота 18', 'Work 18'),
+        { title: 'dark age',
+          tools: 'Adobe Photoshop',
           img: 'assets/images/poster-18.jpg' },
-        { title: T('Робота 19', 'Work 19'),
+        { title: 'a life tragedy',
+          tools: 'Adobe Photoshop',
           img: 'assets/images/poster-19.jpg' },
-        { title: T('Робота 20', 'Work 20'),
+        { title: 'neuron',
+          tools: 'Adobe Photoshop',
           img: 'assets/images/poster-20.jpg' },
         { title: T('Звук води', 'Sound of the water'),
+          tools: 'Adobe Photoshop',
           img: 'assets/images/poster-21.jpg' }
       ]
     },
@@ -178,7 +199,12 @@ var CATEGORIES = [
     { name: T('Ігрові концепти', 'Game concepts'),
       works: [
         { title: T('Робота 01', 'Work 01'),
-          book: { dir: 'assets/book/concepts-01/', count: 9, ext: 'webp', ratio: 1.7778 } }
+          book: { dir: 'assets/book/concepts-01/', count: 9, ext: 'webp', ratio: 1.7778 } },
+        { title: T('Шепіт часу', 'Whisper of time'),
+          tools: 'Adobe Photoshop, Figma',
+          img: 'assets/images/whisper-preview.jpg',
+          /* slides — кадри переливаються самі, а ще їх можна гортати кліком вліво/вправо, стрілками чи клавішами ←/→ */
+          slides: { dir: 'assets/slides/whisper/', count: 12, ext: 'webp', ratio: 1.7778 } }
       ]
     }
   ]},
@@ -186,7 +212,13 @@ var CATEGORIES = [
     { name: 'Rolling Toys', isNew: true }
   ]},
   { id: 'editing', title: T('Монтаж', 'Editing'), projects: [
-    { name: 'League' }
+    { name: '',
+      works: [
+        { title: T('Каталог Мандели', 'Mandela Magazine'),
+          tools: 'Adobe Premiere Pro, Adobe After Effects',
+          video: 'https://youtu.be/Asf1lWLAXlA' }
+      ]
+    }
   ]},
   { id: 'translation', title: T('Переклади', 'Translation'), projects: [
     { name: T('Локалізація ігор', 'Game localization'),
@@ -242,6 +274,18 @@ var CATEGORIES = [
           ] }
       ]
     },
-    { name: T('Переклад книжок', 'Book translation') }
+    { name: T('Переклад книжок', 'Book translation'),
+      works: [
+        { title: 'Cyberpunk 2020 - the second edition',
+          tools: 'Adobe InDesign, Adobe Illustrator',
+          book: { dir: 'assets/book/cyberpunk-01/', count: 27, ext: 'webp', ratio: 0.7071 },
+          media: [
+            { type: 'meter', items: [
+              { label: T('Перекладено', 'Translated'), value: 10 },
+              { label: T('Вичитка', 'Proofreading'), value: 0 }
+            ] }
+          ] }
+      ]
+    }
   ]}
 ];

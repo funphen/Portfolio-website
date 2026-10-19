@@ -49,7 +49,6 @@ h1{margin:0;font-weight:900;font-size:clamp(64px,21vw,340px);line-height:.85;let
   padding:.17em 0;font-weight:900;font-size:clamp(40px,9vw,140px);line-height:1;letter-spacing:-.035em;text-transform:uppercase;transition:background .25s,color .25s}
 .cat-head:hover,.cat.is-open .cat-head{background:var(--fg);color:var(--bg)}
 .cat-head .hint{font-size:clamp(12px,1.1vw,15px);font-weight:500;letter-spacing:0;text-transform:none;white-space:nowrap}
-.cat-head .count{font-size:.2em;font-weight:500;letter-spacing:0;vertical-align:top;margin-left:.35em;position:relative;top:.9em}
 
 .cat-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows var(--dur) var(--ease)}
 .cat.is-open .cat-body{grid-template-rows:1fr}
@@ -259,3 +258,14 @@ ol a:hover{text-decoration:underline}
 .meter-bar{height:18px;border:2px solid var(--fg);padding:2px}
 .meter-bar i{display:block;height:100%;width:0;background:var(--fg);transition:width 1.6s cubic-bezier(.2,.7,.2,1)}
 @media (prefers-reduced-motion:reduce){.meter-bar i{transition:none}}
+
+/* слайдшоу з переливанням (work.slides) */
+.slides{margin:24px 0}
+.slides-stage{position:relative;aspect-ratio:var(--sr,16/9);overflow:hidden;background:#000;outline:none;user-select:none;-webkit-user-select:none}
+.slides-stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.2s ease}
+.slides-stage img.is-active{opacity:1}
+.slides-hit{position:absolute;top:0;bottom:0;width:50%;z-index:2}
+.slides-hit.l{left:0;cursor:w-resize}
+.slides-hit.r{right:0;cursor:e-resize}
+.slides-stage:focus-visible{outline:3px solid var(--fg);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){.slides-stage img{transition:none}}
