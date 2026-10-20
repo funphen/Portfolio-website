@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>funphen</title>
+<meta name="description" content="funphen — дизайнер, аніматор, монтажер, перекладач / designer, animator, video editor, translator">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23111'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;800;900&display=swap&subset=cyrillic" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="wrap" id="topbar">
+  <div class="bar">
+    <a href="#top" id="home"><span lang="uk">Головна</span><span lang="en">Home</span></a>
+    <span><span lang="uk">Версія 1.0</span><span lang="en">Version 1.0</span></span>
+    <div class="tools">
+      <button id="theme" type="button"><span lang="uk">Світла / Темна</span><span lang="en">Light / Dark</span></button>
+      <button id="langBtn" type="button" aria-label="Українська / English"><span lang="uk">UA / <u>EN</u></span><span lang="en"><u>UA</u> / EN</span></button>
+    </div>
+  </div>
+</div>
+
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <span>PROJECTS ✦ PROJECTS ✦ PROJECTS ✦ PROJECTS ✦ PROJECTS ✦ PROJECTS ✦ PROJECTS ✦ PROJECTS ✦ PROJECTS ✦ PROJECTS ✦</span>
+    <span>PROJECTS ✦ PROJECTS ✦ PROJECTS ✦ PROJECTS ✦ PROJECTS ✦ PROJECTS ✦ PROJECTS ✦ PROJECTS ✦ PROJECTS ✦ PROJECTS ✦</span>
+  </div>
+</div>
+
+<main class="wrap" id="top">
+
+  <div class="hero" id="hero">
+    <div class="hero-clip">
+      <div class="role">
+        <span lang="uk">Дизайнер, аніматор, монтажер, перекладач</span>
+        <span lang="en">Designer, animator, video editor, translator</span>
+      </div>
+      <h1>funphen</h1>
+    </div>
+  </div>
+
+  <nav class="cats" id="cats" aria-label="Categories"></nav>
+
+  <section class="reel" aria-label="Works">
+    <div class="reel-track" id="reel"></div>
+  </section>
+
+  <hr>
+
+  <section class="grid" aria-label="Selected work">
+    <div class="tile"><img src="assets/images/home-01.jpg" alt=""></div>
+    <div class="tile"><img src="assets/images/home-02.jpg" alt="" style="object-position:50% 40%"></div>
+    <div class="tile"><img src="assets/images/home-03.jpg" alt=""></div>
+    <div class="tile"><img src="assets/images/home-04.jpg" alt=""></div>
+    <div class="tile"><img src="assets/images/home-05.jpg" alt=""></div>
+    <div class="tile"><img src="assets/images/home-06.jpg" alt=""></div>
+  </section>
+
+  <hr>
+
+  <section class="rows" aria-label="More">
+    <a href="https://www.linkedin.com/in/michael-bielov-144b18241/?isSelfProfile=true" target="_blank" rel="noopener noreferrer">LinkedIn <span class="hint"><span lang="uk">Відкрити</span><span lang="en">Open</span></span></a>
+    <a href="mailto:belov.mish@gmail.com"><span lang="uk">Пошта</span><span lang="en">Email</span> <span class="hint">belov.mish@gmail.com</span></a>
+  </section>
+
+  <section class="about">
+    <div class="tile pic"><img src="assets/images/portrait.jpg" alt="funphen" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></div>
+    <div>
+      <p class="about-name"><strong lang="uk">Михайло Бєлов</strong><strong lang="en">Mykhailo Bielov</strong></p>
+      <p lang="uk">Графічний та цифровий дизайнер із 6+ роками досвіду, який працює на перетині візуального стилю та бізнес-стратегії. Створюю продуманий візуальний контент від концепту до реалізації — з фокусом на детальну естетику, чітку комунікацію бренду та бездоганне дотримання дедлайнів. Відкритий до співпраці та готовий працювати над вашими проєктами.</p>
+      <p lang="en">Graphic and digital designer with 6+ years of experience, working at the intersection of visual style and business strategy. I create thoughtful visual content from concept to delivery, focused on refined aesthetics, clear brand communication and impeccable deadlines. Open to collaboration and ready to work on your projects.</p>
+    </div>
+  </section>
+
+  <hr>
+  <div class="foot">
+    <span></span>
+    <a href="#top"><span lang="uk">Догори</span><span lang="en">Back to top</span></a>
+  </div>
+
+</main>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" inert>
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-panel">
+    <div class="modal-head">
+      <h2 id="modalTitle"></h2>
+      <button class="modal-close" id="modalClose" type="button" aria-label="Close"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M4 4L20 20M20 4L4 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"/></svg></button>
+    </div>
+    <div class="modal-body"><div class="modal-grid" id="modalGrid"></div></div>
+  </div>
+</div>
+
+<section class="page wrap" id="page" hidden></section>
+
+<noscript><p style="padding:24px">Для роботи сайту потрібен JavaScript. / This site needs JavaScript.</p></noscript>
+
+<script src="js/content.js"></script>
+<script src="js/book.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
